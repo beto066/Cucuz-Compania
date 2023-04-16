@@ -1,19 +1,34 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:projetoa1/Models/Categoria.dart';
 import 'package:projetoa1/Models/Produto.dart';
+import 'package:projetoa1/Models/TipoUsuario.dart';
+import 'package:projetoa1/Models/Usuario.dart';
 import 'package:projetoa1/States/StatefulHome.dart';
+import 'package:projetoa1/States/StatefulProduto.dart';
+import 'package:crypto/crypto.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  static var carrinho = <Produto>[];
+
+  static var usuarios = [
+    Usuario('João', 'jao@mail.com', getHash('1234'), null, TipoUsuario.ADMIN),
+    Usuario('Se Vamo', 'savamo@mail.com', getHash('1234'), null, TipoUsuario.PADRAO),
+  ];
+
   static var categorias = [
     Categoria("Arroz"),
     Categoria("Feijão"),
     Categoria("Celular"),
     Categoria("Carro")
   ];
+
   static var produtos = [
     Produto("Arroz tio jorge 500g", "Pacote de arroz tipo 1 Tio jorge", categorias.elementAt(0), 399.99, null),
     Produto("Feijão São jorge 250g", "Pacote de feijão são jorge", categorias.elementAt(1), 249.99, null),
@@ -28,6 +43,13 @@ class MyApp extends StatelessWidget {
 
   const MyApp({super.key});
 
+  static String getHash(String text){
+    var bytesToHash = utf8.encode(text);
+    var sha512Digest = sha512.convert(bytesToHash);
+
+    return sha512Digest.toString() as String;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +57,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StatefulHome(),
+      initialRoute: 'telaInicial',
+      routes: {
+        'telaInicial' : (_) => StatefulHome(),
+        'telaProduto' : (context) {
+          var parametry = ModalRoute.of(context)!.settings.arguments as Map?;
+          return Statefulproduto(idProduto: ((parametry != null)?parametry['idProduto']: 0));
+        }
+      },
     );
   }
 }
