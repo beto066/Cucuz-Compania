@@ -6,7 +6,9 @@ import 'package:projetoa1/Models/Categoria.dart';
 import 'package:projetoa1/Models/Produto.dart';
 import 'package:projetoa1/Models/TipoUsuario.dart';
 import 'package:projetoa1/Models/Usuario.dart';
+import 'package:projetoa1/States/StatefulCarrinho.dart';
 import 'package:projetoa1/States/StatefulHome.dart';
+import 'package:projetoa1/States/StatefulLogin.dart';
 import 'package:projetoa1/States/StatefulProduto.dart';
 import 'package:crypto/crypto.dart';
 
@@ -15,6 +17,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static Usuario? usuarioLogado;
+
   static var carrinho = <Produto>[];
 
   static var usuarios = [
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
     var bytesToHash = utf8.encode(text);
     var sha512Digest = sha512.convert(bytesToHash);
 
-    return sha512Digest.toString() as String;
+    return sha512Digest.toString();
   }
 
   @override
@@ -59,11 +63,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'telaInicial',
       routes: {
-        'telaInicial' : (_) => StatefulHome(),
+        'telaInicial' : (_) => const StatefulHome(),
         'telaProduto' : (context) {
           var parametry = ModalRoute.of(context)!.settings.arguments as Map?;
-          return Statefulproduto(idProduto: ((parametry != null)?parametry['idProduto']: 0));
-        }
+          return StatefulProduto(idProduto: ((parametry != null)?parametry['idProduto']: 0));
+        },
+        'telaCarrinho' : (_) => const StatefulCarrinho(),
+        'telaLogin' : (_) => const StatefulLogin(),
       },
     );
   }
