@@ -72,18 +72,36 @@ class _ModeloState extends State<Modelo> {
       );
 
       listView.add(
+        ListTile(
+          leading: const Icon(Icons.shopping_cart),
+          title: const Text('Carrinho'),
+          onTap: (){
+            Navigator.popAndPushNamed(context, 'telaCarrinho').then((value) => {
+              if (widget.f != null){
+                widget.f!()
+              }
+            });
+          },
+        )
+      );
+
+      print(MyApp.usuarioLogado!.tipoUsuario.id);
+
+      if (MyApp.usuarioLogado!.tipoUsuario.id == 1){
+        listView.add(
           ListTile(
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text('Carrinho'),
+            leading: const Icon(Icons.add),
+            title: const Text('Cadastrar Produto'),
             onTap: (){
-              Navigator.popAndPushNamed(context, 'telaCarrinho').then((value) => {
+              Navigator.popAndPushNamed(context, 'telaFormProduto').then((value) => {
                 if (widget.f != null){
                   widget.f!()
                 }
               });
             },
           )
-      );
+        );
+      }
 
       listView.add(
         ListTile(

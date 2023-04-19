@@ -19,15 +19,18 @@ class LoginState extends State<StatefulLogin> {
   void logar(){
     var encontrado = false;
     _errorMessage = null;
+
     if (_chave.currentState!.validate()){
       setState(() {
         for (int i = 0; i < MyApp.usuarios.length && !encontrado; i++){
           if (MyApp.usuarios[i].senha != MyApp.getHash(_senha.text)){
             _errorMessage = ErrorMessage.SENHA.id;
             _chave.currentState!.validate();
+
           } else if (MyApp.usuarios[i].email != _email.text){
             _errorMessage = ErrorMessage.EMAIL.id;
             _chave.currentState!.validate();
+
           }  else {
             MyApp.usuarioLogado = MyApp.usuarios[i];
             _errorMessage = null;
@@ -36,6 +39,7 @@ class LoginState extends State<StatefulLogin> {
         }
       });
     }
+
     if (encontrado) {
       Navigator.of(context).pop();
     }
@@ -47,7 +51,6 @@ class LoginState extends State<StatefulLogin> {
       title: 'Login',
       principal: false,
       child: SingleChildScrollView(
-
         child: Form(
           key: _chave,
           child : Container(
@@ -61,6 +64,7 @@ class LoginState extends State<StatefulLogin> {
                   backgroundColor: Colors.black12,
                   child: Icon(Icons.person, color: Colors.grey, size:100.0),
                 ),
+
                 const SizedBox(height: 40.0),
                 TextFormField(
                   controller: _email,
@@ -78,6 +82,7 @@ class LoginState extends State<StatefulLogin> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _senha,
@@ -96,6 +101,7 @@ class LoginState extends State<StatefulLogin> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20.0),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -104,6 +110,7 @@ class LoginState extends State<StatefulLogin> {
                     child: const Text("Logar"),
                   ),
                 ),
+
                 const SizedBox(height: 100.0),
               ]
             )

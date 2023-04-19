@@ -7,6 +7,7 @@ import 'package:projetoa1/Models/Produto.dart';
 import 'package:projetoa1/Models/TipoUsuario.dart';
 import 'package:projetoa1/Models/Usuario.dart';
 import 'package:projetoa1/States/StatefulCarrinho.dart';
+import 'package:projetoa1/States/StatefulFormProduto.dart';
 import 'package:projetoa1/States/StatefulHome.dart';
 import 'package:projetoa1/States/StatefulLogin.dart';
 import 'package:projetoa1/States/StatefulProduto.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
 
   static var usuarios = [
     Usuario('João', 'jao@mail.com', getHash('1234'), null, TipoUsuario.ADMIN),
-    Usuario('Se Vamo', 'savamo@mail.com', getHash('1234'), null, TipoUsuario.PADRAO),
+    Usuario('Se Vamo', 'sevamo@mail.com', getHash('1234'), null, TipoUsuario.PADRAO),
   ];
 
   static var categorias = [
@@ -66,10 +67,14 @@ class MyApp extends StatelessWidget {
         'telaInicial' : (_) => const StatefulHome(),
         'telaProduto' : (context) {
           var parametry = ModalRoute.of(context)!.settings.arguments as Map?;
-          return StatefulProduto(idProduto: ((parametry != null)?parametry['idProduto']: 0));
+          return StatefulProduto(idProduto: ((parametry != null) ? parametry['idProduto']: 0));
         },
         'telaCarrinho' : (_) => const StatefulCarrinho(),
         'telaLogin' : (_) => const StatefulLogin(),
+        'telaFormProduto' : (context) {
+          var parametry = ModalRoute.of(context)!.settings.arguments as Map?;
+          return StatefulFormProduto(title: ((parametry != null) ? parametry['title']: 'Cadastro de Produtos'));
+        } ,
       },
     );
   }
