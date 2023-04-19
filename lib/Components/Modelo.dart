@@ -41,6 +41,10 @@ class _ModeloState extends State<Modelo> {
 
     var listView = <Widget>[];
 
+    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    scaffoldKey.currentState?.closeDrawer();
+
     if (MyApp.usuarioLogado != null){
       listView.add(
         UserAccountsDrawerHeader(
@@ -55,10 +59,14 @@ class _ModeloState extends State<Modelo> {
 
       listView.add(
         ListTile(
-          leading: Icon(Icons.home),
-          title: Text('Home'),
+          leading: const Icon(Icons.home),
+          title: const Text('Home'),
           onTap: () {
-            Navigator.popAndPushNamed(context, 'telaInicial');
+            Navigator.popAndPushNamed(context, 'telaInicial').then((value) => {
+              if (widget.f != null){
+                widget.f!()
+              }
+            });
           },
         ),
       );
@@ -68,7 +76,11 @@ class _ModeloState extends State<Modelo> {
             leading: const Icon(Icons.shopping_cart),
             title: const Text('Carrinho'),
             onTap: (){
-              Navigator.popAndPushNamed(context, 'telaCarrinho');
+              Navigator.popAndPushNamed(context, 'telaCarrinho').then((value) => {
+                if (widget.f != null){
+                  widget.f!()
+                }
+              });
             },
           )
       );
@@ -79,16 +91,23 @@ class _ModeloState extends State<Modelo> {
           title: const Text('Logout'),
           onTap: () {
             MyApp.usuarioLogado = null;
+            if (widget.f != null){
+              widget.f!();
+            }
           },
         ),
       );
     } else {
       listView.add(
         ListTile(
-          leading: Icon(Icons.home),
-          title: Text('Home'),
+          leading: const Icon(Icons.home),
+          title: const Text('Home'),
           onTap: () {
-            Navigator.popAndPushNamed(context, 'telaInicial');
+            Navigator.popAndPushNamed(context, 'telaInicial').then((value) => {
+              if (widget.f != null){
+                widget.f!()
+              }
+            });
           },
         ),
       );
@@ -98,7 +117,11 @@ class _ModeloState extends State<Modelo> {
             leading: const Icon(Icons.shopping_cart),
             title: const Text('Carrinho'),
             onTap: (){
-              Navigator.popAndPushNamed(context, 'telaCarrinho');
+              Navigator.popAndPushNamed(context, 'telaCarrinho').then((value) => {
+                if (widget.f != null){
+                  widget.f!()
+                }
+              });
             },
           )
       );
@@ -108,20 +131,24 @@ class _ModeloState extends State<Modelo> {
           leading: const Icon(Icons.login),
           title: const Text('Login'),
           onTap: () {
-            Navigator.popAndPushNamed(context, 'telaLogin');
+            Navigator.popAndPushNamed(context, 'telaLogin').then((value) => {
+              if (widget.f != null){
+                widget.f!()
+              }
+            });
           },
         ),
       );
     }
 
-
-
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
       ),
       drawer: Drawer(
+        width: MediaQuery.of(context).size.width * 0.7,
         child: ListView(
           children: listView,
         ),

@@ -8,8 +8,13 @@ class Usuario {
   late String _senha;
   late String? _nomeFile;
   late TipoUsuario _tipoUsuario;
-  late List<Produto> _carrinho;
+  late List<Produto> _carrinho = [];
   static var _count = 0;
+
+  @override
+  String toString() {
+    return 'Usuario{_id: $_id, _nome: $_nome, _email: $_email, _senha: $_senha, _nomeFile: $_nomeFile, _tipoUsuario: $_tipoUsuario, _carrinho: $_carrinho}';
+  }
 
   Usuario(this._nome, this._email, this._senha, this._nomeFile, this._tipoUsuario){
     this._id = ++_count;
