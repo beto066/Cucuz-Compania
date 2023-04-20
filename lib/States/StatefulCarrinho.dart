@@ -29,7 +29,13 @@ class CarrinhoState extends State<StatefulCarrinho>{
   }
 
   void comprar(){
-    MyApp.carrinho = [];
+    if (MyApp.usuarioLogado == null){
+      Navigator.of(context).pushNamed('telaLogin');
+    }
+    setState(() {
+      MyApp.carrinho = [];
+      p = MyApp.carrinho;
+    });
   }
 
   @override

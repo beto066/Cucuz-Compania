@@ -73,7 +73,10 @@ class MyApp extends StatelessWidget {
         'telaLogin' : (_) => const StatefulLogin(),
         'telaFormProduto' : (context) {
           var parametry = ModalRoute.of(context)!.settings.arguments as Map?;
-          return StatefulFormProduto(title: ((parametry != null) ? parametry['title']: 'Cadastro de Produtos'));
+          return StatefulFormProduto(
+            title: ((parametry != null) ? parametry['title']: 'Cadastro de Produtos'),
+            produto: ((parametry != null) ? parametry['produto'] : null),
+          );
         } ,
       },
     );

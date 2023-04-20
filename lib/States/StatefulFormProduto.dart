@@ -11,7 +11,6 @@ class StatefulFormProduto extends StatefulWidget {
   final String? title;
   final Produto? produto;
 
-
   const StatefulFormProduto({super.key, this.title, this.produto});
 
   @override
@@ -31,18 +30,35 @@ class FormProdutoState extends State<StatefulFormProduto> {
   void salvar() {
     setState(() {
       if (_chave.currentState!.validate()){
-        Categoria categoria = MyApp.categorias[0];
-        for (int i = 0; i < MyApp.categorias.length; i++){
-          if (MyApp.categorias[i].categoria == _categoria.text){
-            categoria = MyApp.categorias[i];
-          }
+        if (widget.produto != null){
+          widget.produto!.nome = _nome.text;
+          widget.produto!.descricao = _descricao.text;
+          widget.produto!.categoria = getCategoriaProduto();
+          widget.produto!.preco = double.parse(_preco.text);
+
+          Navigator.of(context).pop();
+        } else {
+          var categoria = getCategoriaProduto();
+
+          MyApp.produtos.add(Produto(_nome.text, _descricao.text, categoria, double.parse(_preco.text), ''));
+
+          Navigator.of(context).pop();
         }
-
-        MyApp.produtos.add(Produto(_nome.text, _descricao.text, categoria, double.parse(_preco.text), ''));
-
-        Navigator.of(context).pop();
       }
     });
+  }
+
+  Categoria getCategoriaProduto(){
+    var encontrado = false;
+    Categoria categoria = MyApp.categorias[0];
+
+    for (int i = 0; i < MyApp.categorias.length && !encontrado; i++){
+      if (MyApp.categorias[i].categoria == _categoria.text){
+        categoria = MyApp.categorias[i];
+      }
+    }
+
+    return categoria;
   }
 
   void cancelar() {
@@ -62,6 +78,12 @@ class FormProdutoState extends State<StatefulFormProduto> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.produto != null){
+      _nome.text = widget.produto!.nome;
+      _descricao.text = widget.produto!.descricao;
+      _preco.text = widget.produto!.preco.toString();
+      _categoria.text = widget.produto!.categoria.categoria;
+    }
 
     for (int i = 0; i < MyApp.categorias.length; i++){
       categorias.add({
@@ -83,6 +105,7 @@ class FormProdutoState extends State<StatefulFormProduto> {
               children: <Widget>[
                 TextFormField(
                   controller: _nome,
+                  // initialValue: (widget.produto != null)? widget.produto!.nome: null,
                   decoration: const InputDecoration(
                       hintText: 'Entre com o nome do produto'
                   ),
@@ -99,7 +122,7 @@ class FormProdutoState extends State<StatefulFormProduto> {
                 const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _descricao,
-                  obscureText: true,
+                  // initialValue: (widget.produto != null)? widget.produto!.descricao: null,
                   decoration: const InputDecoration(
                       hintText: 'Entre com a descrição do produto'
                   ),
@@ -115,7 +138,6 @@ class FormProdutoState extends State<StatefulFormProduto> {
                 ),
                 const SizedBox(height: 20.0),
                 SelectFormField(
-                  controller: _categoria,
                   type: SelectFormFieldType.dropdown,
                   labelText: 'Selecione a categoria do produto',
                   validator: (value) {
@@ -138,6 +160,7 @@ class FormProdutoState extends State<StatefulFormProduto> {
                   ],
                   keyboardType: TextInputType.number,
                   controller: _preco,
+                  // initialValue: (widget.produto != null)? widget.produto!.preco.toString(): null,
                   decoration:
                   const InputDecoration(hintText: 'Informe o preço do produto'),
                   validator: (String? value) {

@@ -1,5 +1,5 @@
 enum TipoUsuario {
-  ADMIN(1, "Administrador"), PADRAO(1, "Padrão");
+  ADMIN(1, "Administrador"), PADRAO(2, "Padrão");
 
   final int id;
   final String descricao;
